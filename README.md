@@ -20,9 +20,11 @@
   App mode: 'development' Or 'production'.  
   // 'development' will give descriptive logs & errors in webpages/console.
 
+  Database configuration: DB_USER,  DB_PASS,  DB_DATABASE,  DB_HOST,  DB_DIALECT
+
   Run `source .env` to export the environment variables
 
-  (For windows environment, you mat use .bat files)
+  (For windows environment, you may use .bat files)
 * Run the application.
 
   Install pm2 globally and run it on startup: 

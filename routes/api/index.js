@@ -20,13 +20,33 @@ var validateAdmin = (req, res, next) => {
 // Validate admin
 // router.use('/*', validateAdmin);
 
-// mongoose.connect(config.getDbCon());
-
 // GET admin dashboard.
 router.get('/', function(req, res, next) {
+  console.log(process.env.DB_USER);
   var constr = config.getDbCon();
   console.log(constr);
-  mongoose.connect(constr);
+  var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
+  //Get the default connection
+  var db = mongoose.connection;
+
+  //Bind connection to error event (to get notification of connection errors)
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+
+  // Create an instance of model SomeModel
+  var new_user = new User({ userName: 'awesome' });
+
+  // Save the new model instance, passing a callback
+  // new_user.save(function (err) {
+  //   if (err) return handleError(err);
+  //   // saved!
+  // });
+
+  User.find()
+  .then(users => {
+    console.log(users);
+    res.send(users);
+  });
   // var goto = commons.getHomePageByUser(req.session.user);
   // commons.render(req, res, goto.page, goto.params);
 });
