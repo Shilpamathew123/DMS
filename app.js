@@ -9,7 +9,6 @@ var mongoose     = require("mongoose");
 
 var config       = require('./config');
 var commons      = require('./lib');
-var User         = require('./models/user');
 var indexRouter  = require('./routes');
 var apiRouter    = require('./routes/api');
 
@@ -44,10 +43,10 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  // if(err) {
-  //   console.error(res.locals.message);
-  //   console.error(res.locals.error);
-  // }
+  if(err) {
+    console.error(res.locals.message);
+    console.error(res.locals.error);
+  }
   // render the error page
   res.status(err.status || 500);
   res.render('error');

@@ -1,0 +1,41 @@
+/*
+ * The files api.
+ */
+
+var express  = require('express');
+var router   = express.Router();
+var mongoose = require("mongoose");
+
+var commons  = require('../../lib');
+var config   = require('../../config');
+var File     = require('../../models/file');
+
+// List files
+router.get('/', function(req, res, next) {
+  var constr = config.getDbCon();
+  var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+  File.find()
+  .then(files => {
+    res.send(files);
+  });
+});
+
+// Add new file.
+router.post('/add', function(req, res, next) {
+  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+  var newFile = new File({
+    name: req.body.name,
+    content: req.body.content
+  });
+  newFile.save(function (err) {
+    if (err) console.log(err);
+    res.send("File saved.");
+  });
+});
+
+module.exports = router;
