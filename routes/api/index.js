@@ -7,9 +7,9 @@ var express  = require('express');
 var commons  = require('../../lib');
 var config   = require('../../config');
 
-var homeApiRouter  = require('./home');
-var filesApiRouter = require('./files');
-var usersApiRouter = require('./users');
+var homeApiRouter    = require('./home');
+var filesApiRouter   = require('./files');
+var usersApiRouter   = require('./users');
 var foldersApiRouter = require('./folders');
 
 var app = express();

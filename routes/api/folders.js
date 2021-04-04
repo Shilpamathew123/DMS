@@ -10,16 +10,24 @@ var commons  = require('../../lib');
 var config   = require('../../config');
 var Folder   = require('../../models/folder');
 
-// List files
+// List folders.
 router.get('/', function(req, res, next) {
+  res.send("Please specify a user ID.");
+});
+router.get('/:userId', function(req, res, next) {
   var constr = config.getDbCon();
   var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-  Folder.find()
-  .then(folders => {
-    res.send(folders);
-  });
+  var userId = req.params.userId;
+  if (userId) {
+    Folder.find({userId: userId})
+    .then(folders => {
+      res.send(folders);
+    });
+  } else {
+    res.send("No folders found.");
+  }
 });
 
 // Add new folder.

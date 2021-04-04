@@ -8,6 +8,7 @@ var mongoose = require("mongoose");
 var commons  = require('../../lib');
 var config   = require('../../config');
 var User     = require('../../models/user');
+var Folder   = require('../../models/folder');
 
 // List users.
 router.get('/', function(req, res, next) {
@@ -27,12 +28,31 @@ router.post('/add', function(req, res) {
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-  var newUser = new User({
-    name: req.body.name
-  });
-  newUser.save(function (err) {
-    if (err) console.log(err);
-    res.send("User saved.");
+  var name = req.body.name;
+  User.find({name: name})
+  .then(user => {
+    if (user.length > 0) {
+      res.send("User with this name exists.");
+    } else {
+      var newUser = new User({
+        name: name
+      });
+      newUser.save(function (err, usr) {
+        if (err) {
+          res.send("An error occured:" + err);
+        } else {
+          // Create home folder for new user.
+          var newFolder = new Folder({
+            name: "home",
+            userId: usr.id
+          });
+          newFolder.save(function (err, folder) {
+            if (err) console.log(err);
+          });
+          res.send("User saved.");
+        }
+      });
+    }
   });
 });
 

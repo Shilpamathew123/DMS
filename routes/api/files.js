@@ -12,14 +12,22 @@ var File     = require('../../models/file');
 
 // List files
 router.get('/', function(req, res, next) {
+  res.send("Please specify a user ID.");
+});
+router.get('/:userId', function(req, res, next) {
   var constr = config.getDbCon();
   var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-  File.find()
-  .then(files => {
-    res.send(files);
-  });
+  var userId = req.params.userId;
+  if (userId) {
+    File.find({userId: userId})
+    .then(files => {
+      res.send(files);
+    });
+  } else {
+    res.send("No files found.");
+  }
 });
 
 // Add new file.
