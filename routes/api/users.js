@@ -102,6 +102,7 @@ router.delete('/delete', function(req, res, next) {
   });
 });
 
+// List folders & files in user home.
 router.get('/home/:userId', function(req, res, next) {
   var constr = config.getDbCon();
   var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -110,13 +111,13 @@ router.get('/home/:userId', function(req, res, next) {
 
   var homeFolderId = "";
   var userId = req.params.userId;
-  Folder.findOne({userId: userId, name: "home"})
-  .then(homeFolder => {
-    if (homeFolder) {
-      homeFolderId = homeFolder.id;
-    }
-    var homeItems = {};
-    if (userId) {
+  if (userId) {
+    Folder.findOne({userId: userId, name: "home"})
+    .then(homeFolder => {
+      if (homeFolder) {
+        homeFolderId = homeFolder.id;
+      }
+      var homeItems = {};
       File.find({userId: userId, folderId: homeFolderId})
       .then(files => {
         homeItems.files = files;
@@ -126,10 +127,35 @@ router.get('/home/:userId', function(req, res, next) {
           res.json(homeItems);
         });
       });
-    } else {
-      res.json("No files found.");
-    }
-  });
+    });
+  } else {
+    res.json("No files found.");
+  }
+});
+
+// List files/folders in a user folder.
+router.get('/dir/:userId/:folderId', function(req, res, next) {
+  var constr = config.getDbCon();
+  var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+  var userId = req.params.userId;
+  var folderId = req.params.folderId;
+  if (userId) {
+    var folderItems = {};
+    File.find({userId: userId, folderId: folderId})
+    .then(files => {
+      folderItems.files = files;
+      Folder.find({userId: userId, parentFolderId: folderId})
+      .then(folders => {
+        folderItems.folders = folders;
+        res.json(folderItems);
+      });
+    });
+  } else {
+    res.json("No files found.");
+  }
 });
 
 module.exports = router;
