@@ -9,6 +9,7 @@ var commons  = require('../../lib');
 var config   = require('../../config');
 var User     = require('../../models/user');
 var Folder   = require('../../models/folder');
+var File     = require('../../models/file');
 
 // List users.
 router.get('/', function(req, res, next) {
@@ -98,6 +99,36 @@ router.delete('/delete', function(req, res, next) {
   }, function (err) {
     if (err) console.log(err);
     res.json("User removed.");
+  });
+});
+
+router.get('/home/:userId', function(req, res, next) {
+  var constr = config.getDbCon();
+  var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+  var homeFolderId = "";
+  var userId = req.params.userId;
+  Folder.findOne({userId: userId, name: "home"})
+  .then(homeFolder => {
+    if (homeFolder) {
+      homeFolderId = homeFolder.id;
+    }
+    var homeItems = {};
+    if (userId) {
+      File.find({userId: userId, folderId: homeFolderId})
+      .then(files => {
+        homeItems.files = files;
+        Folder.find({userId: userId, parentFolderId: homeFolderId})
+        .then(folders => {
+          homeItems.folders = folders;
+          res.json(homeItems);
+        });
+      });
+    } else {
+      res.json("No files found.");
+    }
   });
 });
 
