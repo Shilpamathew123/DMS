@@ -20,8 +20,13 @@ router.get('/:userId', function(req, res, next) {
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
   var userId = req.params.userId;
+  var search = {};
   if (userId) {
-    File.find({userId: userId})
+    search.userId = userId;
+    if (req.query.name) {
+      search.name = req.query.name;
+    }
+    File.find(search)
     .then(files => {
       res.json(files);
     });
@@ -46,6 +51,45 @@ router.post('/add', function(req, res, next) {
     if (err) console.log(err);
     res.json("File saved.");
   });
+});
+
+// Edit file.
+router.post('/edit/:userId/:fileId', function(req, res, next) {
+  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+  var fileId = req.params.fileId;
+  if (mongoose.Types.ObjectId.isValid(fileId)) {
+    File.findOne({_id: fileId})
+    .then(file => {
+      if (file) {
+        var fileUserId = file.userId;
+        if (fileUserId != req.params.userId) {
+          res.json("This user is not authorized to edit the given file.");
+        } else {
+          if (req.body.name) {
+            file.name = req.body.name;
+          }
+          if (req.body.folderId) {
+            file.folderId = req.body.folderId;
+          }
+          if (req.body.content) {
+            file.content = req.body.content;
+          }
+          file.save(function (err, file) {
+            if (err) console.log(err);
+          });
+          res.json(file);        
+        }
+
+      } else {
+        res.json("No file found.");
+      }
+    });
+  } else {
+    res.json("Invalid file ID.");
+  }
 });
 
 // Delete file.

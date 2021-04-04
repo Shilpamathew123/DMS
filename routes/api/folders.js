@@ -20,8 +20,13 @@ router.get('/:userId', function(req, res, next) {
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
   var userId = req.params.userId;
+  var search = {};
   if (userId) {
-    Folder.find({userId: userId})
+    search.userId = userId;
+    if (req.query.name) {
+      search.name = req.query.name;
+    }
+    Folder.find(search)
     .then(folders => {
       res.json(folders);
     });
@@ -45,6 +50,42 @@ router.post('/add', function(req, res, next) {
     if (err) console.log(err);
     res.json("Folder saved.");
   });
+});
+
+// Edit folder.
+router.post('/edit/:userId/:folderId', function(req, res, next) {
+  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+  var folderId = req.params.folderId;
+  if (mongoose.Types.ObjectId.isValid(folderId)) {
+    Folder.findOne({_id: folderId})
+    .then(folder => {
+      if (folder) {
+        var folderUserId = folder.userId;
+        if (folderUserId != req.params.userId) {
+          res.json("This user is not authorized to edit the given folder.");
+        } else {
+          if (req.body.name) {
+            folder.name = req.body.name;
+          }
+          if (req.body.parentFolderId) {
+            folder.parentFolderId = req.body.parentFolderId;
+          }
+          folder.save(function (err, folder) {
+            if (err) console.log(err);
+          });
+          res.json(folder);        
+        }
+
+      } else {
+        res.json("No folder found.");
+      }
+    });
+  } else {
+    res.json("Invalid folder ID.");
+  }
 });
 
 // Delete folder.

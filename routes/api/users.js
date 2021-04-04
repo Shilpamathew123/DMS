@@ -16,7 +16,11 @@ router.get('/', function(req, res, next) {
   var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-  User.find()
+  var search = {};
+  if (req.query.name) {
+    search.name = req.query.name;
+  }
+  User.find(search)
   .then(users => {
     res.json(users);
   });
@@ -54,6 +58,33 @@ router.post('/add', function(req, res) {
       });
     }
   });
+});
+
+// Edit user.
+router.post('/edit/:userId', function(req, res, next) {
+  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+  var userId = req.params.userId;
+  if (mongoose.Types.ObjectId.isValid(userId)) {
+    User.findOne({_id: userId})
+    .then(user => {
+      if (user) {
+        if (req.body.name) {
+          user.name = req.body.name;
+        }
+        user.save(function (err, user) {
+          if (err) console.log(err);
+        });
+        res.json(user);
+      } else {
+        res.json("No user found.");
+      }
+    });
+  } else {
+    res.json("Invalid user ID.");
+  }
 });
 
 // Delete users.
