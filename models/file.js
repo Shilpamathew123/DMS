@@ -3,8 +3,9 @@ var Schema   = mongoose.Schema;
 
 var fileSchema = new Schema({
   name: String,
-  content: String,
-  userId: String
+  folderId: String,
+  userId: String,
+  content: String
 });
 
 var File = mongoose.model('File', fileSchema);

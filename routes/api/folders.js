@@ -1,52 +1,55 @@
 /*
- * The users api.
+ * The folders api.
  */
 
 var express  = require('express');
 var router   = express.Router();
 var mongoose = require("mongoose");
+
 var commons  = require('../../lib');
 var config   = require('../../config');
-var User     = require('../../models/user');
+var Folder   = require('../../models/folder');
 
-// List users.
+// List files
 router.get('/', function(req, res, next) {
   var constr = config.getDbCon();
   var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-  User.find()
-  .then(users => {
-    res.send(users);
+  Folder.find()
+  .then(folders => {
+    res.send(folders);
   });
 });
 
-// Add users.
-router.post('/add', function(req, res) {
+// Add new folder.
+router.post('/add', function(req, res, next) {
   var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-  var newUser = new User({
-    name: req.body.name
+  var newFolder = new Folder({
+    name: req.body.name,
+    userId: req.body.userId,
+    parentFolderId: req.body.parentFolderId
   });
-  newUser.save(function (err) {
+  newFolder.save(function (err) {
     if (err) console.log(err);
-    res.send("User saved.");
+    res.send("Folder saved.");
   });
 });
 
-// Delete users.
+// Delete folder.
 router.delete('/delete', function(req, res, next) {
   var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-  User.deleteOne({
+  Folder.deleteOne({
     name: req.body.name
   }, function (err) {
     if (err) console.log(err);
-    res.send("User removed.");
+    res.send("Folder removed.");
   });
 });
 

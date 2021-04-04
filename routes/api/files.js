@@ -30,11 +30,27 @@ router.post('/add', function(req, res, next) {
 
   var newFile = new File({
     name: req.body.name,
+    folderId: req.body.folderId,
+    userId: req.body.userId,
     content: req.body.content
   });
   newFile.save(function (err) {
     if (err) console.log(err);
     res.send("File saved.");
+  });
+});
+
+// Delete file.
+router.delete('/delete', function(req, res, next) {
+  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+  File.deleteOne({
+    name: req.body.name
+  }, function (err) {
+    if (err) console.log(err);
+    res.send("File removed.");
   });
 });
 
