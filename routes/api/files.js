@@ -71,6 +71,7 @@ router.post('/edit/:userId/:fileId', function(req, res, next) {
           if (req.body.name) {
             file.name = req.body.name;
           }
+          // Changing folderId is equivalent to moving the file to another folder.
           if (req.body.folderId) {
             file.folderId = req.body.folderId;
           }

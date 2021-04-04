@@ -41,15 +41,21 @@ router.post('/add', function(req, res, next) {
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-  var newFolder = new Folder({
-    name: req.body.name,
-    userId: req.body.userId,
-    parentFolderId: req.body.parentFolderId
-  });
-  newFolder.save(function (err) {
-    if (err) console.log(err);
-    res.json("Folder saved.");
-  });
+  var name = req.body.name;
+  if (name == "home") {
+    res.json("Invalid folder name:'home'");
+  } else {
+    var newFolder = new Folder({
+      name: name,
+      userId: req.body.userId,
+      parentFolderId: req.body.parentFolderId
+    });
+    newFolder.save(function (err) {
+      if (err) console.log(err);
+      res.json("Folder saved.");
+    });    
+  }
+
 });
 
 // Edit folder.
@@ -70,6 +76,7 @@ router.post('/edit/:userId/:folderId', function(req, res, next) {
           if (req.body.name) {
             folder.name = req.body.name;
           }
+          // Changing parentFolderId is equivalent to moving the folder to another folder.
           if (req.body.parentFolderId) {
             folder.parentFolderId = req.body.parentFolderId;
           }
