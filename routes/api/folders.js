@@ -12,7 +12,7 @@ var Folder   = require('../../models/folder');
 
 // List folders.
 router.get('/', function(req, res, next) {
-  res.send("Please specify a user ID.");
+  res.json("Please specify a user ID.");
 });
 router.get('/:userId', function(req, res, next) {
   var constr = config.getDbCon();
@@ -23,10 +23,10 @@ router.get('/:userId', function(req, res, next) {
   if (userId) {
     Folder.find({userId: userId})
     .then(folders => {
-      res.send(folders);
+      res.json(folders);
     });
   } else {
-    res.send("No folders found.");
+    res.json("No folders found.");
   }
 });
 
@@ -43,7 +43,7 @@ router.post('/add', function(req, res, next) {
   });
   newFolder.save(function (err) {
     if (err) console.log(err);
-    res.send("Folder saved.");
+    res.json("Folder saved.");
   });
 });
 
@@ -57,7 +57,7 @@ router.delete('/delete', function(req, res, next) {
     name: req.body.name
   }, function (err) {
     if (err) console.log(err);
-    res.send("Folder removed.");
+    res.json("Folder removed.");
   });
 });
 

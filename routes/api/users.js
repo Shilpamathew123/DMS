@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
   User.find()
   .then(users => {
-    res.send(users);
+    res.json(users);
   });
 });
 
@@ -32,14 +32,14 @@ router.post('/add', function(req, res) {
   User.find({name: name})
   .then(user => {
     if (user.length > 0) {
-      res.send("User with this name exists.");
+      res.json("User with this name exists.");
     } else {
       var newUser = new User({
         name: name
       });
       newUser.save(function (err, usr) {
         if (err) {
-          res.send("An error occured:" + err);
+          res.json("An error occured:" + err);
         } else {
           // Create home folder for new user.
           var newFolder = new Folder({
@@ -49,7 +49,7 @@ router.post('/add', function(req, res) {
           newFolder.save(function (err, folder) {
             if (err) console.log(err);
           });
-          res.send("User saved.");
+          res.json("User saved.");
         }
       });
     }
@@ -66,7 +66,7 @@ router.delete('/delete', function(req, res, next) {
     name: req.body.name
   }, function (err) {
     if (err) console.log(err);
-    res.send("User removed.");
+    res.json("User removed.");
   });
 });
 

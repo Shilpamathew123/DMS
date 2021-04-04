@@ -12,7 +12,7 @@ var File     = require('../../models/file');
 
 // List files
 router.get('/', function(req, res, next) {
-  res.send("Please specify a user ID.");
+  res.json("Please specify a user ID.");
 });
 router.get('/:userId', function(req, res, next) {
   var constr = config.getDbCon();
@@ -23,10 +23,10 @@ router.get('/:userId', function(req, res, next) {
   if (userId) {
     File.find({userId: userId})
     .then(files => {
-      res.send(files);
+      res.json(files);
     });
   } else {
-    res.send("No files found.");
+    res.json("No files found.");
   }
 });
 
@@ -44,7 +44,7 @@ router.post('/add', function(req, res, next) {
   });
   newFile.save(function (err) {
     if (err) console.log(err);
-    res.send("File saved.");
+    res.json("File saved.");
   });
 });
 
@@ -58,7 +58,7 @@ router.delete('/delete', function(req, res, next) {
     name: req.body.name
   }, function (err) {
     if (err) console.log(err);
-    res.send("File removed.");
+    res.json("File removed.");
   });
 });
 
