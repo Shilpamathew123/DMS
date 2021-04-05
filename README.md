@@ -15,7 +15,7 @@
 
   Session secret: SESSION_SECRET // A strong secret key to encrypt session data.
 
-  (optional) SSL certificate paths: SSL_PRIVATE_KEY_PATH, SSL_CERTIFICATE_PATH, SSL_CHAIN_PATH
+  (If https enabled) SSL certificate paths: SSL_PRIVATE_KEY_PATH, SSL_CERTIFICATE_PATH, SSL_CHAIN_PATH
 
   App mode: 'development' Or 'production'.  
   // 'development' will give descriptive logs & errors in webpages/console.

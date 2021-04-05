@@ -1,6 +1,5 @@
 {
-  "enable_https": false,
-  "view_engine": "jade",
+  "enable_https": true,
   "db": {
     "user": "",
     "pass": "",

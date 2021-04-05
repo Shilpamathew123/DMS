@@ -7,6 +7,9 @@
 var app     = require('../app');
 var debug   = require('debug')('dmsapp:server');
 const http  = require('http');
+const https = require('https');
+const fs    = require('fs');
+var path    = require('path');
 var config  = require('../config');
 var commons = require('../lib');
 
@@ -28,22 +31,66 @@ var server = http.createServer(app);
  */
 
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+server.on('error', onErrorHttp);
+server.on('listening', onListeningHttp);
 
-/**
- * Event listener for HTTP server "error" event.
+function onErrorHttp(error) {
+  onError(error, port);
+}
+
+function onListeningHttp() {
+  onListening(server);
+}
+
+/*
+ * If enabled, set up HTTPS server.
  */
 
-function onError(error) {
+var useHttps = config.httpsEnabled;
+var privateKeyPath = process.env.SSL_PRIVATE_KEY_PATH.trim() || "";
+var certificatePath = process.env.SSL_CERTIFICATE_PATH.trim() || "";
+var caPath = process.env.SSL_CHAIN_PATH.trim() || "";
+console.log('capth = ' + caPath);
+console.log('certificatePath = ' + certificatePath);
+if (useHttps && privateKeyPath && certificatePath && caPath) {
+  // Certificates for secure connection.
+  const privateKey  = fs.readFileSync(path.resolve(privateKeyPath), 'utf8');
+  const certificate = fs.readFileSync(path.resolve(certificatePath), 'utf8');
+  const ca = fs.readFileSync(path.resolve(caPath), 'utf8');
+  const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: ca
+  };
+
+  var httpsPort = commons.normalizePort(process.env.HTTPS_PORT || '3443');
+  app.set('https-port', httpsPort);
+  const httpsServer = https.createServer(credentials, app);
+
+  httpsServer.listen(httpsPort);
+  httpsServer.on('error', onErrorHttps);
+  httpsServer.on('listening', onListeningHttps);
+
+  function onErrorHttps(error) {
+    onError(error, httpsPort);
+  }
+
+  function onListeningHttps() {
+    onListening(httpsServer);
+  }
+}
+
+/**
+ * Event listener for server "error" event.
+ */
+
+function onError(error, port) {
   if (error.syscall !== 'listen') {
     throw error;
   }
-
   var bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
-
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
@@ -60,10 +107,10 @@ function onError(error) {
 }
 
 /**
- * Event listener for HTTP server "listening" event.
+ * Event listener for server "listening" event.
  */
 
-function onListening() {
+function onListening(server) {
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
