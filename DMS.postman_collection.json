@@ -1,0 +1,687 @@
+{
+	"info": {
+		"_postman_id": "e848d106-0269-451a-8690-e3e8af7375e0",
+		"name": "DMS",
+		"description": "This API provides various endpoints for document management system.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List Users",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/users",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List folders",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/folders/{{USER_ID}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"folders",
+						"{{USER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Files",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/files/{{USER_ID}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"files",
+						"{{USER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Users",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{NEW_USER_NAME}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/users/add",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Folders",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{FOLDER_NAME}}\",\r\n    \"userId\": \"{{USER_ID}}\",\r\n    \"parentFolderId\": \"{{PARENT_FOLDER_ID}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/folders/add",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"folders",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Files",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{NEW_FILE_NAME}}\",\r\n    \"folderId\": \"{{FOLDER_ID}}\",\r\n    \"userId\": \"{{USER_ID}}\",\r\n    \"content\": \"file content\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/files/add",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"files",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit user",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{USER_NAME}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/users/edit/{{USER_ID}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"edit",
+						"{{USER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit folder",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{FOLDER_NAME}}\",\r\n    \"parentFolderId\": \"{{PARENT_FOLDER_ID}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/folders/edit/{{USER_ID}}/{{FOLDER_ID}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"folders",
+						"edit",
+						"{{USER_ID}}",
+						"{{FOLDER_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit File",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{EDIT_FILE_NAME}}\",\r\n    \"content\": \"file new content\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/files/edit/{{USER_ID}}/{{FILE_ID}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"files",
+						"edit",
+						"{{USER_ID}}",
+						"{{FILE_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{DELETE_USER_NAME}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/users/delete",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Folder",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{DELETE_FOLDER_NAME}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/folders/delete",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"folders",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Files",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{DELETE_FILE_NAME}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/files/delete",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"files",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Home",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/users/home/{{USER_ID}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"home",
+						"{{USER_ID}}"
+					]
+				},
+				"description": "The home screen of the app, for a user, which shows all the folders owned by the user, and all the files that are not present in any folder."
+			},
+			"response": []
+		},
+		{
+			"name": "User Folder Items",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/users/dir/{{USER_ID}}/{{FOLDER_ID}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"dir",
+						"{{USER_ID}}",
+						"{{FOLDER_ID}}"
+					]
+				},
+				"description": "For every folder that the user owns, the user can see all the files / subfolders contained in the folder."
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{API_PASS}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "api_user",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "USER_ID",
+			"value": "6069b545bd747f79a8cb1db8"
+		},
+		{
+			"key": "FOLDER_ID",
+			"value": "6069b545bd747f79a8cb1db9"
+		},
+		{
+			"key": "FOLDER_NAME",
+			"value": "home"
+		},
+		{
+			"key": "PARENT_FOLDER_NAME",
+			"value": "1234"
+		},
+		{
+			"key": "USER_NAME",
+			"value": "user2"
+		},
+		{
+			"key": "API_PASS",
+			"value": "api_user_1"
+		},
+		{
+			"key": "SERVER_IP_PORT",
+			"value": "3.0.90.225:3000"
+		},
+		{
+			"key": "NEW_USER_NAME",
+			"value": "user2"
+		},
+		{
+			"key": "PARENT_FOLDER_ID",
+			"value": "6069b545bd747f79a8cb1db9"
+		},
+		{
+			"key": "NEW_FILE_NAME",
+			"value": "file1"
+		},
+		{
+			"key": "FILE_ID",
+			"value": "6069d4fc4ae047099beee9ad"
+		},
+		{
+			"key": "EDIT_FILE_NAME",
+			"value": "file1"
+		},
+		{
+			"key": "DELETE_USER_NAME",
+			"value": "home"
+		},
+		{
+			"key": "DELETE_FOLDER_NAME",
+			"value": "subfolder"
+		},
+		{
+			"key": "DELETE_FILE_NAME",
+			"value": "file2"
+		}
+	]
+}

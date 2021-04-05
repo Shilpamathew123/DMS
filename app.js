@@ -27,7 +27,8 @@ app.use(cookieParser());
 
 const apiPass = process.env.API_PASS;
 app.use(basicAuth({
-  users: { 'api_user' : apiPass }
+  users: { 'api_user' : apiPass },
+  challenge: true
 }));
 
 // Route requests to pages.

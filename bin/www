@@ -13,18 +13,19 @@ var path    = require('path');
 var config  = require('../config');
 var commons = require('../lib');
 
-/**
- * Get port from environment and store in Express.
- */
-
-var port = commons.normalizePort(process.env.HTTP_PORT || '3000');
-app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = commons.normalizePort(process.env.HTTP_PORT || '3000');
+app.set('port', port);
 
 /**
  * Listen on provided port, on all network interfaces.
