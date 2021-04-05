@@ -53,6 +53,24 @@ router.post('/add', function(req, res, next) {
   });
 });
 
+// Add new files - Aggregate.
+router.post('/addmany', function(req, res, next) {
+  var db = commons.getDb();
+  var files = req.body;
+  for(let file of files) {
+    var newFile = new File({
+      name: file.name,
+      folderId: file.folderId,
+      userId: file.userId,
+      content: file.content
+    });
+    newFile.save(function (err) {
+      if (err) res.json(err);;
+      res.json("Files saved.");
+    });
+  }
+});
+
 // Edit file.
 router.post('/edit/:userId/:fileId', function(req, res, next) {
   var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
