@@ -243,6 +243,50 @@
 			"response": []
 		},
 		{
+			"name": "Add Multiple Files",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n    \"name\": \"{{NEW_FILE_NAME}}\",\r\n    \"folderId\": \"{{FOLDER_ID}}\",\r\n    \"userId\": \"{{USER_ID}}\",\r\n    \"content\": \"file content\"\r\n    },\r\n    {\r\n    \"name\": \"{{NEW_FILE_NAME}}\",\r\n    \"folderId\": \"{{FOLDER_ID}}\",\r\n    \"userId\": \"{{USER_ID}}\",\r\n    \"content\": \"file content\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/files/addmany",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"files",
+						"addmany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Edit user",
 			"request": {
 				"auth": {
