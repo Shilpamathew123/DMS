@@ -132,7 +132,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"{{NEW_USER_NAME}}\"\r\n}",
+					"raw": "{\r\n    \"name\": \"{{NEW_USER_NAME}}\",\r\n    \"pass\": \"{{NEW_USER_PASS}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -264,7 +264,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"{{USER_NAME}}\"\r\n}",
+					"raw": "{\r\n    \"name\": \"{{USER_NAME}}\",\r\n    \"pass\": \"{{USER_PASS}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -590,6 +590,51 @@
 				"description": "For every folder that the user owns, the user can see all the files / subfolders contained in the folder."
 			},
 			"response": []
+		},
+		{
+			"name": "Login Users",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{API_PASS}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "api_user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pass\": \"{{USER_PASS}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{SERVER_IP_PORT}}/api/users/login/{{USER_ID}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVER_IP_PORT}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"login",
+						"{{USER_ID}}"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -695,6 +740,18 @@
 		{
 			"key": "DELETE_FILE_ID",
 			"value": "606b271689307b5b9760cf85"
+		},
+		{
+			"key": "NEW_USER_PASS",
+			"value": "pass1"
+		},
+		{
+			"key": "USER_PASS",
+			"value": "pass1"
+		},
+		{
+			"key": "USER_ID_LOGIN",
+			"value": "606b3326f8640a61b8d02127"
 		}
 	]
 }
