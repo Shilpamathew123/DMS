@@ -15,10 +15,7 @@ router.get('/', function(req, res, next) {
   res.json("Please specify a user ID.");
 });
 router.get('/:userId', function(req, res, next) {
-  var constr = config.getDbCon();
-  var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+  commons.connectDb("primaryPreferred");
   var userId = req.params.userId;
   var search = {};
   if (userId) {
@@ -37,10 +34,7 @@ router.get('/:userId', function(req, res, next) {
 
 // Add new file.
 router.post('/add', function(req, res, next) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("primaryPreferred");
   var newFile = new File({
     name: req.body.name,
     folderId: req.body.folderId,
@@ -55,7 +49,7 @@ router.post('/add', function(req, res, next) {
 
 // Add new files - Aggregate.
 router.post('/addmany', function(req, res, next) {
-  var db = commons.getDb();
+  commons.connectDb("secondaryPreferred");
   var files = req.body;
   for(let file of files) {
     var newFile = new File({
@@ -73,10 +67,7 @@ router.post('/addmany', function(req, res, next) {
 
 // Edit file.
 router.post('/edit/:userId/:fileId', function(req, res, next) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("primaryPreferred");
   var fileId = req.params.fileId;
   if (mongoose.Types.ObjectId.isValid(fileId)) {
     File.findOne({_id: fileId})
@@ -113,10 +104,7 @@ router.post('/edit/:userId/:fileId', function(req, res, next) {
 
 // Delete file.
 router.delete('/delete', function(req, res, next) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("primaryPreferred");
   File.deleteOne({
     name: req.body.name
   }, function (err) {
@@ -126,10 +114,7 @@ router.delete('/delete', function(req, res, next) {
 });
 
 router.delete('/delete/:userId/:fileId', function(req, res, next) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("primaryPreferred");
   var fileId = req.params.fileId;
   if (mongoose.Types.ObjectId.isValid(fileId)) {
     File.findOne({_id: fileId})

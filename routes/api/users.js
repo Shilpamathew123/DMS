@@ -14,10 +14,7 @@ var File     = require('../../models/file');
 
 // List users.
 router.get('/', function(req, res, next) {
-  var constr = config.getDbCon();
-  var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+  commons.connectDb("secondaryPreferred");
   var search = {};
   if (req.query.name) {
     search.name = req.query.name;
@@ -30,10 +27,7 @@ router.get('/', function(req, res, next) {
 
 // Add users.
 router.post('/add', function(req, res) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("secondaryPreferred");
   var name = req.body.name;
   User.find({name: name})
   .then(user => {
@@ -65,10 +59,7 @@ router.post('/add', function(req, res) {
 
 // Edit user.
 router.post('/edit/:userId', function(req, res, next) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("secondaryPreferred");
   var userId = req.params.userId;
   if (mongoose.Types.ObjectId.isValid(userId)) {
     User.findOne({_id: userId})
@@ -95,10 +86,7 @@ router.post('/edit/:userId', function(req, res, next) {
 
 // Delete users.
 router.delete('/delete/:userId', function(req, res, next) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("secondaryPreferred");
   var userId = req.params.userId;
   if (mongoose.Types.ObjectId.isValid(userId)) {
     User.findOne({_id: userId})
@@ -121,11 +109,7 @@ router.delete('/delete/:userId', function(req, res, next) {
 
 // List folders & files in user home.
 router.get('/home/:userId', function(req, res, next) {
-  var constr = config.getDbCon();
-  var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("primaryPreferred");
   var homeFolderId = "";
   var userId = req.params.userId;
   if (userId) {
@@ -152,11 +136,7 @@ router.get('/home/:userId', function(req, res, next) {
 
 // List files/folders in a user folder.
 router.get('/dir/:userId/:folderId', function(req, res, next) {
-  var constr = config.getDbCon();
-  var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("primaryPreferred");
   var userId = req.params.userId;
   var folderId = req.params.folderId;
   if (userId) {
@@ -177,10 +157,7 @@ router.get('/dir/:userId/:folderId', function(req, res, next) {
 
 // Login user.
 router.post('/login/:userId', function(req, res, next) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("secondaryPreferred");
   var userId = req.params.userId;
   if (mongoose.Types.ObjectId.isValid(userId)) {
     User.findOne({_id: userId})

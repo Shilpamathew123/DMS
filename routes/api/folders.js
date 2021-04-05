@@ -15,10 +15,7 @@ router.get('/', function(req, res, next) {
   res.json("Please specify a user ID.");
 });
 router.get('/:userId', function(req, res, next) {
-  var constr = config.getDbCon();
-  var client = mongoose.connect(constr, { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+  commons.connectDb("primaryPreferred");
   var userId = req.params.userId;
   var search = {};
   if (userId) {
@@ -37,10 +34,7 @@ router.get('/:userId', function(req, res, next) {
 
 // Add new folder.
 router.post('/add', function(req, res, next) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("primaryPreferred");
   var name = req.body.name;
   if (name == "home") {
     res.json("Invalid folder name:'home'");
@@ -60,10 +54,7 @@ router.post('/add', function(req, res, next) {
 
 // Edit folder.
 router.post('/edit/:userId/:folderId', function(req, res, next) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("primaryPreferred");
   var folderId = req.params.folderId;
   if (mongoose.Types.ObjectId.isValid(folderId)) {
     Folder.findOne({_id: folderId})
@@ -97,10 +88,7 @@ router.post('/edit/:userId/:folderId', function(req, res, next) {
 
 // Delete folder.
 router.delete('/delete/:userId/:folderId', function(req, res, next) {
-  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+  commons.connectDb("primaryPreferred");
   var folderId = req.params.folderId;
   if (mongoose.Types.ObjectId.isValid(folderId)) {
     Folder.findOne({_id: folderId})
