@@ -47,11 +47,12 @@ function onListeningHttp() {
  */
 
 var useHttps = config.httpsEnabled;
-var privateKeyPath = process.env.SSL_PRIVATE_KEY_PATH.trim() || "";
-var certificatePath = process.env.SSL_CERTIFICATE_PATH.trim() || "";
-var caPath = process.env.SSL_CHAIN_PATH.trim() || "";
-console.log('capth = ' + caPath);
-console.log('certificatePath = ' + certificatePath);
+var privateKeyPath = process.env.SSL_PRIVATE_KEY_PATH || "";
+var certificatePath = process.env.SSL_CERTIFICATE_PATH || "";
+var caPath = process.env.SSL_CHAIN_PATH || "";
+privateKeyPath = privateKeyPath.trim();
+certificatePath = certificatePath.trim();
+caPath = caPath.trim();
 if (useHttps && privateKeyPath && certificatePath && caPath) {
   // Certificates for secure connection.
   const privateKey  = fs.readFileSync(path.resolve(privateKeyPath), 'utf8');

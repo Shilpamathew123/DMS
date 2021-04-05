@@ -22,6 +22,8 @@
 
   Database configuration: DB_USER,  DB_PASS,  DB_DATABASE,  DB_HOST,  DB_DIALECT
 
+  API basic auth password: API_PASS
+
   Run `source .env` to export the environment variables
 
   (For windows environment, you may use .bat files)

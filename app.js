@@ -6,6 +6,7 @@ var logger       = require('morgan');
 var createError  = require('http-errors');
 var cookieParser = require('cookie-parser');
 var mongoose     = require("mongoose");
+const basicAuth  = require('express-basic-auth');
 
 var config       = require('./config');
 var commons      = require('./lib');
@@ -23,6 +24,11 @@ app.use(logger(app.get('logger-mode') || 'dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+const apiPass = process.env.API_PASS;
+app.use(basicAuth({
+  users: { 'api_user' : apiPass }
+}));
 
 // Route requests to pages.
 app.use('/', indexRouter);
