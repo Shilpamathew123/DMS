@@ -96,17 +96,34 @@ router.post('/edit/:userId/:folderId', function(req, res, next) {
 });
 
 // Delete folder.
-router.delete('/delete', function(req, res, next) {
+router.delete('/delete/:userId/:folderId', function(req, res, next) {
   var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-  Folder.deleteOne({
-    name: req.body.name
-  }, function (err) {
-    if (err) console.log(err);
-    res.json("Folder removed.");
-  });
+  var folderId = req.params.folderId;
+  if (mongoose.Types.ObjectId.isValid(folderId)) {
+    Folder.findOne({_id: folderId})
+    .then(folder => {
+      if (folder) {
+        var folderUserId = folder.userId;
+        if (folderUserId != req.params.userId) {
+          res.json("This user is not authorized to delete the given folder.");
+        } else {
+          Folder.deleteOne({
+            _id: folderId
+          }, function (err) {
+            if (err) console.log(err);
+            res.json("Folder removed.");
+          });
+        }
+      } else {
+        res.json("No folder found.");
+      }
+    });
+  } else {
+    res.json("Invalid folder ID.");
+  }
 });
 
 module.exports = router;

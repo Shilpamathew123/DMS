@@ -89,17 +89,29 @@ router.post('/edit/:userId', function(req, res, next) {
 });
 
 // Delete users.
-router.delete('/delete', function(req, res, next) {
+router.delete('/delete/:userId', function(req, res, next) {
   var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-  User.deleteOne({
-    name: req.body.name
-  }, function (err) {
-    if (err) console.log(err);
-    res.json("User removed.");
-  });
+  var userId = req.params.userId;
+  if (mongoose.Types.ObjectId.isValid(userId)) {
+    User.findOne({_id: userId})
+    .then(user => {
+      if (user) {
+        User.deleteOne({
+          _id: userId
+        }, function (err) {
+          if (err) console.log(err);
+          res.json("user removed.");
+        });
+      } else {
+        res.json("No user found.");
+      }
+    });
+  } else {
+    res.json("Invalid user ID.");
+  }
 });
 
 // List folders & files in user home.

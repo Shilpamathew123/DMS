@@ -401,7 +401,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"{{DELETE_USER_NAME}}\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -409,7 +409,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{SERVER_IP_PORT}}/api/users/delete",
+					"raw": "http://{{SERVER_IP_PORT}}/api/users/delete/{{DELETE_USER_ID}}",
 					"protocol": "http",
 					"host": [
 						"{{SERVER_IP_PORT}}"
@@ -417,7 +417,8 @@
 					"path": [
 						"api",
 						"users",
-						"delete"
+						"delete",
+						"{{DELETE_USER_ID}}"
 					]
 				}
 			},
@@ -445,7 +446,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"{{DELETE_FOLDER_NAME}}\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -453,7 +454,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{SERVER_IP_PORT}}/api/folders/delete",
+					"raw": "http://{{SERVER_IP_PORT}}/api/folders/delete/{{USER_ID}}/{{DELETE_FOLDER_ID}}",
 					"protocol": "http",
 					"host": [
 						"{{SERVER_IP_PORT}}"
@@ -461,7 +462,9 @@
 					"path": [
 						"api",
 						"folders",
-						"delete"
+						"delete",
+						"{{USER_ID}}",
+						"{{DELETE_FOLDER_ID}}"
 					]
 				}
 			},
@@ -489,7 +492,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"{{DELETE_FILE_NAME}}\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -497,7 +500,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{SERVER_IP_PORT}}/api/files/delete",
+					"raw": "http://{{SERVER_IP_PORT}}/api/files/delete/{{USER_ID}}/{{DELETE_FILE_ID}}",
 					"protocol": "http",
 					"host": [
 						"{{SERVER_IP_PORT}}"
@@ -505,7 +508,9 @@
 					"path": [
 						"api",
 						"files",
-						"delete"
+						"delete",
+						"{{USER_ID}}",
+						"{{DELETE_FILE_ID}}"
 					]
 				}
 			},
@@ -676,12 +681,20 @@
 			"value": "home"
 		},
 		{
-			"key": "DELETE_FOLDER_NAME",
-			"value": "subfolder"
+			"key": "DELETE_FOLDER_ID",
+			"value": "606b23e9d6be64551ededc58"
 		},
 		{
 			"key": "DELETE_FILE_NAME",
 			"value": "file2"
+		},
+		{
+			"key": "DELETE_USER_ID",
+			"value": "606b268589307b5b9760cf83"
+		},
+		{
+			"key": "DELETE_FILE_ID",
+			"value": "606b271689307b5b9760cf85"
 		}
 	]
 }

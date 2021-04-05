@@ -107,4 +107,34 @@ router.delete('/delete', function(req, res, next) {
   });
 });
 
+router.delete('/delete/:userId/:fileId', function(req, res, next) {
+  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+  var fileId = req.params.fileId;
+  if (mongoose.Types.ObjectId.isValid(fileId)) {
+    File.findOne({_id: fileId})
+    .then(file => {
+      if (file) {
+        var fileUserId = file.userId;
+        if (fileUserId != req.params.userId) {
+          res.json("This user is not authorized to delete the given file.");
+        } else {
+          File.deleteOne({
+            _id: fileId
+          }, function (err) {
+            if (err) console.log(err);
+            res.json("File removed.");
+          });
+        }
+      } else {
+        res.json("No file found.");
+      }
+    });
+  } else {
+    res.json("Invalid file ID.");
+  }
+});
+
 module.exports = router;
