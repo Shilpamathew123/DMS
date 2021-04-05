@@ -9,8 +9,8 @@
   Note: read the 'Local development' section for setting another password in .env
 
 * The API is hosted at: http://3.0.90.225:3000/api
-  Now https is disabled. Once we have the domain and ssls certificates, 
-  setting some .env variables and enable_https=true will enable https.
+  Now https is disabled. Once we have the domain and ssl certificates, 
+  setting some .env variables and enable_https=true in config will enable https.
 
 * Most of the API methods require a user id. Given below is a test user:
   name: user1

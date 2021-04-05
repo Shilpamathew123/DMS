@@ -5,6 +5,7 @@
 var express  = require('express');
 var router   = express.Router();
 var mongoose = require("mongoose");
+var bcrypt   = require('bcrypt');
 var commons  = require('../../lib');
 var config   = require('../../config');
 var User     = require('../../models/user');
@@ -40,7 +41,8 @@ router.post('/add', function(req, res) {
       res.json("User with this name exists.");
     } else {
       var newUser = new User({
-        name: name
+        name: name,
+        pass: bcrypt.hashSync(req.body.pass, bcrypt.genSaltSync())
       });
       newUser.save(function (err, usr) {
         if (err) {
@@ -74,6 +76,9 @@ router.post('/edit/:userId', function(req, res, next) {
       if (user) {
         if (req.body.name) {
           user.name = req.body.name;
+        }
+        if (req.body.pass) {
+          user.pass = bcrypt.hashSync(req.body.pass, bcrypt.genSaltSync());
         }
         user.save(function (err, user) {
           if (err) console.log(err);
@@ -167,6 +172,32 @@ router.get('/dir/:userId/:folderId', function(req, res, next) {
     });
   } else {
     res.json("No files found.");
+  }
+});
+
+// Login user.
+router.post('/login/:userId', function(req, res, next) {
+  var client = mongoose.connect(config.getDbCon(), { useNewUrlParser: true, useUnifiedTopology: true });
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+  var userId = req.params.userId;
+  if (mongoose.Types.ObjectId.isValid(userId)) {
+    User.findOne({_id: userId})
+    .then(user => {
+      if (user) {
+        if (bcrypt.compareSync(req.body.pass, user.pass)) {
+          user.pass = "****";
+          res.json(user);
+        } else {
+          res.json("Unable to authenticate. Invalid user or password.");
+        }
+      } else {
+        res.json("No user found.");
+      }
+    });
+  } else {
+    res.json("Invalid user ID.");
   }
 });
 
