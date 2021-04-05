@@ -14,9 +14,9 @@
 
 * Most of the API methods require a user id. Given below is a test user:
   name: user1
-  id: 6069b545bd747f79a8cb1db8
+  id: 606b3326f8640a61b8d02127
   
-  e.g. list files: http://3.0.90.225:3000/api/files/6069b545bd747f79a8cb1db8
+  e.g. list files: http://3.0.90.225:3000/api/files/606b3326f8640a61b8d02127
 
 * The Postman collection describing API methods is added to the repo: 'DMS.postman_collection.json'
   Download the file and import in postman.

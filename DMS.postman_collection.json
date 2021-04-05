@@ -719,19 +719,15 @@
 	"variable": [
 		{
 			"key": "USER_ID",
-			"value": "6069b545bd747f79a8cb1db8"
+			"value": "606b3326f8640a61b8d02127"
 		},
 		{
 			"key": "FOLDER_ID",
-			"value": "6069b545bd747f79a8cb1db9"
+			"value": "606b3326f8640a61b8d02128"
 		},
 		{
 			"key": "FOLDER_NAME",
 			"value": "home"
-		},
-		{
-			"key": "PARENT_FOLDER_NAME",
-			"value": "1234"
 		},
 		{
 			"key": "USER_NAME",
@@ -751,7 +747,7 @@
 		},
 		{
 			"key": "PARENT_FOLDER_ID",
-			"value": "6069b545bd747f79a8cb1db9"
+			"value": "606b3326f8640a61b8d02128"
 		},
 		{
 			"key": "NEW_FILE_NAME",
